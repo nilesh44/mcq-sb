@@ -12,20 +12,20 @@ import javax.persistence.Table;
 @Table(name = "test")
 public class Tests {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="test_id")
-    private Integer testId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "test_id")
+	private Integer testId;
 
-    @Column(name="name")
-    private String name;
+	@Column(name = "name")
+	private String name;
 
-    @Column(name="subject_id")
-    private Integer subjectId;
-  
-    @Column(name="crt")
-    private Timestamp creatTimeStamp;
+	@Column(name = "subject_id")
+	private Integer subjectId;
 
-    @Column(name="exp")
-    private Timestamp expTimeStamp;
+	@Column(name = "crt")
+	private Timestamp creatTimeStamp;
+
+	@Column(name = "exp")
+	private Timestamp expTimeStamp;
 }
