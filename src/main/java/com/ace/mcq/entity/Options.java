@@ -15,14 +15,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table
+@Table(name = "options")
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Options {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "option_id")
 	private Integer optionId;
 

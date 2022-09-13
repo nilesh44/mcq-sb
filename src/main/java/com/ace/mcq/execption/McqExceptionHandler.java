@@ -19,7 +19,7 @@ public class McqExceptionHandler {
 			    .build());
 	}
 
-	@ExceptionHandler
+	@ExceptionHandler(RecordNotFoundException.class)
 	public ResponseEntity<Error> handleRecordNotFoundException(Exception e){
 
 		return ResponseEntity

@@ -13,7 +13,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Table(name = "question")
+@Table(name = "questions")
 @Entity
 @Builder
 @Data
@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 public class Questions {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "question_id")
 	private Integer questionId;
 

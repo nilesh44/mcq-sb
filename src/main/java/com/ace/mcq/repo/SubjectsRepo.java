@@ -8,7 +8,7 @@ import com.ace.mcq.entity.Subjects;
 
 public interface SubjectsRepo extends JpaRepository<Subjects, Integer>{
 
-    @Query("select s from Subjects s where s.name = :subjectname and  s.expTimeStamp is null")
+    @Query("select s.subjectId from Subjects s where s.name = :subjectname and  s.expTimeStamp is null")
     public Integer getSubjectByName(@Param("subjectname") String subjectname);
 
 }
