@@ -6,10 +6,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.GenerationType;
 
 @Entity
 @Table(name = "subject")
+@Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Subjects {
 
 	@Id
