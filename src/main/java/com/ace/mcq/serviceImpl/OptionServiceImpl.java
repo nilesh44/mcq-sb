@@ -15,8 +15,11 @@ import com.ace.mcq.service.OptionsService;
 import com.ace.mcq.utilities.CommonUitilities;
 import com.ace.mcq.validation.CommonValidation;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Transactional
 @Service
+@Slf4j
 public class OptionServiceImpl implements OptionsService {
 
 	@Autowired
@@ -47,10 +50,12 @@ public class OptionServiceImpl implements OptionsService {
 				
 				.collect(Collectors.toList());
 
-		optionsEntity.forEach((option)->{
-			optionsRepo.save(option);
-		});
-		//optionsRepo.saveAll(options);
+		/*
+		 * optionsEntity.forEach((option)->{ optionsRepo.save(option); });
+		 */
+		optionsRepo.saveAll(optionsEntity);
+		
+		 log.info("options  created successfully" );
 	}
 
 }

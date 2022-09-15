@@ -12,8 +12,11 @@ import com.ace.mcq.service.QuestionService;
 import com.ace.mcq.utilities.CommonUitilities;
 import com.ace.mcq.validation.CommonValidation;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
 @Transactional
+@Slf4j
 public class QuestionServiceImpl implements QuestionService {
 
 	@Autowired
@@ -25,9 +28,8 @@ public class QuestionServiceImpl implements QuestionService {
 	@Override
 	public void createQuestion(QuestionCreate questionCreate) {
 		
-		Integer testId = testsRepo.getTestByName(questionCreate.getTestName());
-
-	    CommonValidation.checkRecordNotFound(testId, "test Name not found");
+		//validate and throw error if test not present
+		Integer testId = validateTestName(questionCreate.getTestName());
 
 		Questions questions = Questions
 				.builder()
@@ -37,7 +39,14 @@ public class QuestionServiceImpl implements QuestionService {
 				.build();
 		
 		questionsRepo.save(questions);
-
+		
+		 log.info("question "+questionCreate.getQuestion() +" created successfully" );
+	}
+	
+	public Integer validateTestName(String testName){
+		Integer testId = testsRepo.getTestByName(testName);
+	    CommonValidation.checkRecordNotFound(testId, "test Name not found");
+	    return testId;
 	}
 
 }
