@@ -1,5 +1,8 @@
 package com.ace.mcq.serviceImpl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,8 +31,8 @@ public class TestServiceImpl implements TestService {
     	Integer subjectid = validateSubject(createTestRequest.getSubjectName());
         
     	String testName=createTestRequest.getTestName();
-        //validate and throw error if testName already Present.    	 
-        validateTest(testName);
+        //validate and throw error if testName already Present for given subject.    	 
+        validateTest(testName,subjectid);
         
         Tests tests= Tests.builder()
         .name(testName)
@@ -49,11 +52,24 @@ public class TestServiceImpl implements TestService {
         return subjectid;
     }
     
-    private Integer validateTest(String testName) {
-    	 Integer testId= testsRepo.getTestByName(testName);
+    private Integer validateTest(String testName,Integer subjectid) {
+    	 Integer testId= testsRepo.getTestByNameAndSubjectId(testName,subjectid);
          CommonValidation.checkRecordAlreadyPresent(testId, testName+ " alrady prsesent");
     return testId;
     }
+
+	@Override
+	public List<String> getAllTestName(String subjectName) {
+		
+		Integer subjectid= validateSubject(subjectName);
+		
+		List<String> testNames=	testsRepo.getAllTestName(subjectid)
+		.stream()
+		.map((test)->test.getName())
+		.collect(Collectors.toList());
+		
+		return testNames;
+	}
 	
     
 }

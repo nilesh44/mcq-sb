@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +27,7 @@ public class SubjectController {
 		return ResponseEntity.ok("successfull");
 	}
 	
-	@PostMapping(value = "/subject/getAll")
+	@GetMapping(value = "/subject/getAll")
 	public ResponseEntity<List<String>> getAllSubject(){		
 		List<String> subjectNames= subjectService.getAllSubjectName();
 		return ResponseEntity

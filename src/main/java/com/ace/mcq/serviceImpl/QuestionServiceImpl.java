@@ -1,5 +1,7 @@
 package com.ace.mcq.serviceImpl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +49,12 @@ public class QuestionServiceImpl implements QuestionService {
 		Integer testId = testsRepo.getTestByName(testName);
 	    CommonValidation.checkRecordNotFound(testId, "test Name not found");
 	    return testId;
+	}
+
+	@Override
+	public List<String> getAllQuestion(String testName) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

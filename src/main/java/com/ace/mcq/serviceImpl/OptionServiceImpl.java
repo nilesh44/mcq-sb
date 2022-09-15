@@ -58,4 +58,10 @@ public class OptionServiceImpl implements OptionsService {
 		 log.info("options  created successfully" );
 	}
 
+	@Override
+	public List<String> getAllOptions(String QuestionId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
