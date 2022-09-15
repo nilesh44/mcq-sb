@@ -1,19 +1,19 @@
 package com.ace.mcq.pojo;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class QuestionCreate {
-
+public class GetAllQuestionResponse {
+	
 	private String question;
 	
-	private String testName;
-	
-	private String subjectName;
+	private List<String> options;
+
 }

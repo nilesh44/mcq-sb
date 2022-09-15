@@ -29,7 +29,7 @@ public class TestController {
     }
     
     @GetMapping(value = "/test/getAll/{subjectName}")
-	public ResponseEntity<List<String>> getAllSubject(@PathVariable("subjectName") String subjectName){		
+	public ResponseEntity<List<String>> getAllTestName(@PathVariable("subjectName") String subjectName){		
 		List<String> testName= testService.getAllTestName(subjectName);
 		return ResponseEntity
 				.status(HttpStatus.OK)

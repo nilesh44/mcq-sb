@@ -32,7 +32,7 @@ public class Questions {
 	private String question;
 
 	@Column(name = "test_id")
-	private Integer testid;
+	private Integer testId;
 
 	@Column(name = "crt")
 	private Timestamp creatTimeStamp;
