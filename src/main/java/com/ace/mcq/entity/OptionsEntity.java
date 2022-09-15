@@ -1,6 +1,8 @@
 package com.ace.mcq.entity;
 
-import java.security.Timestamp;
+
+
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,19 +22,19 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Options {
+public class OptionsEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "option_id")
 	private Integer optionId;
 
-	@Column(name = "option")
+	@Column(name = "opt")
 	private String option;
 
 	@Column(name = "question_id")
 	private Integer questionId;
 
-	@Column(name = "isCorrect")
+	@Column(name = "is_correct")
 	private boolean isCorrect;
 
 	@Column(name = "crt")
