@@ -14,6 +14,6 @@ import lombok.NoArgsConstructor;
 public class Option {
 	
 	private String option;
-	private boolean isCorrect;
+	private Boolean isCorrect;
 
 }

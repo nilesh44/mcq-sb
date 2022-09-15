@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.ace.mcq.entity.OptionsEntity;
 import com.ace.mcq.entity.Questions;
+import com.ace.mcq.execption.CommonException;
+import com.ace.mcq.pojo.Option;
 import com.ace.mcq.pojo.OptionCreate;
 import com.ace.mcq.repo.OptionsRepo;
 import com.ace.mcq.repo.QuestionsRepo;
@@ -36,6 +38,13 @@ public class OptionServiceImpl implements OptionsService {
 
 		CommonValidation.checkRecordNotFound(question.getQuestion(), "question Not found");
 
+		List<Option> correctOptions= optionCreate.getOptions().stream().filter((option)->
+			
+			option.getIsCorrect()).collect(Collectors.toList());
+		
+		if(correctOptions.size()!=1) {
+			throw new CommonException("only one answer should correct");
+		}
 		List<OptionsEntity> optionsEntity = optionCreate
 				.getOptions()
 				.stream()
@@ -43,7 +52,7 @@ public class OptionServiceImpl implements OptionsService {
 
 						OptionsEntity.builder()
 						.option(option.getOption())
-						.isCorrect(option.isCorrect())
+						.isCorrect(option.getIsCorrect())
 						.questionId(questionId)
 					    .creatTimeStamp(CommonUitilities.getSqlTimeStamp())
 					    .build())

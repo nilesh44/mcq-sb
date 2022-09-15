@@ -82,7 +82,7 @@ public class QuestionServiceImpl implements QuestionService {
 	List<GetAllQuestionResponse> getAllQuestionResponse = questionsRepo.getAllQuestions(testId).stream()
 		.map((question)->{
 			
-			List<String> options = optionsRepo.getAllOptions(testId);
+			List<String> options = optionsRepo.getAllOptions(question.getQuestionId());
 			
 			return GetAllQuestionResponse.builder()
 			.question(question.getQuestion())

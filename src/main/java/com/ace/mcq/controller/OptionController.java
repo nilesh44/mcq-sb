@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ace.mcq.pojo.OptionCreate;
 import com.ace.mcq.service.OptionsService;
 
-@RestController
+import lombok.extern.slf4j.Slf4j;
 
+@RestController
+@Slf4j
 public class OptionController {
 	
 	@Autowired
@@ -18,7 +20,7 @@ public class OptionController {
 	
 	@PostMapping(value = "/options/create")
 	public ResponseEntity<String> createOptions(@RequestBody OptionCreate optionCreate) {
-		
+		log.info(optionCreate.toString());
 		optionsService.createOptions(optionCreate);
 		return ResponseEntity.ok().build();
 	}

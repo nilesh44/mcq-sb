@@ -38,5 +38,13 @@ public class McqExceptionHandler {
 		.status(HttpStatus.BAD_REQUEST)
 		.body(Error.builder().msg(e.getMessage()).build());
 	}
+	
+	@ExceptionHandler(CommonException.class)
+	public ResponseEntity<Error> handleCommonException(Exception e){
+		log.error(e.getLocalizedMessage());
+		return ResponseEntity
+		.status(HttpStatus.BAD_REQUEST)
+		.body(Error.builder().msg(e.getMessage()).build());
+	}
 
 }
