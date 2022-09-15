@@ -5,12 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Builder
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Error {
-	
-	private String msg;
+@NoArgsConstructor
+@Builder
+public class QuestionCreate {
 
+	private String question;
+	
+	private String testName;
 }

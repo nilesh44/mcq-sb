@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: 8083
   
   
 spring:
@@ -11,15 +11,9 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
         use-new-id-generator-mappings: false
   datasource:
-    ## application and mysql containers should belongs to same network for communicating with each other
-    ##use below url ,in place of localhost use container name
     url: jdbc:mysql://localhost:3306/mcq
-    ## use this url for connecting mysql container from local machine
-    ## not expose 23306 from mysql container
-    #url: jdbc:mysql://localhost:23306/coffee_store    
     username: root
     password: admin
-    
     driver-class-name: com.mysql.cj.jdbc.Driver
     
 logging:

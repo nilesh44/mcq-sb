@@ -1,14 +1,16 @@
 package com.ace.mcq.serviceImpl;
 
-import java.sql.Timestamp;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.ace.mcq.entity.Subjects;
 import com.ace.mcq.pojo.SubjectCreateRequest;
 import com.ace.mcq.repo.SubjectsRepo;
 import com.ace.mcq.service.SubjectService;
+import com.ace.mcq.utilities.CommonUitilities;
 @Service
+@Transactional
 public class SubjectServiceImpl implements SubjectService{
 	
 	@Autowired 
@@ -19,7 +21,7 @@ public class SubjectServiceImpl implements SubjectService{
 		
 	Subjects subject=	Subjects.builder()
 		.name(subjectCreateRequest.getName())
-		.creatTimeStamp(new Timestamp(System.currentTimeMillis()))
+		.creatTimeStamp(CommonUitilities.getSqlTimeStamp())
 		.build();
 		
 		subjectsRepo.save(subject);
