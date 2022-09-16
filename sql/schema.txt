@@ -1,0 +1,43 @@
+drop database mcq;
+commit;
+create schema mcq;
+use mcq;
+create table subject(
+subject_id int auto_increment primary key,
+name varchar(30) not null,
+crt datetime not null,
+exp datetime
+
+);
+
+create table test(
+test_id int auto_increment primary key,
+name varchar(30) not null,
+subject_id int not null,
+crt datetime not null,
+exp datetime,
+foreign key(subject_id) references subject(subject_id)
+);
+
+create table questions(
+question_id int auto_increment primary key,
+question text not null,
+test_id int not null,
+crt datetime not null,
+exp datetime,
+foreign key(test_id) references test(test_id)
+);
+create table options(
+option_id int auto_increment primary key,
+question_id int not null,
+opt text not null,
+is_correct boolean not null,
+crt datetime not null,
+exp datetime,
+foreign key(question_id) references questions(question_id)
+);
+
+select * from subject;
+select * from test;
+select * from questions;
+select * from options;
