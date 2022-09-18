@@ -3,14 +3,18 @@ package com.ace.mcq.serviceImpl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.aspectj.weaver.patterns.TypePatternQuestions.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ace.mcq.entity.OptionsEntity;
 import com.ace.mcq.entity.Questions;
-import com.ace.mcq.pojo.GetAllQuestionResponse;
+import com.ace.mcq.execption.CommonException;
+import com.ace.mcq.pojo.QuestionWithOptionsCreate;
+import com.ace.mcq.pojo.Option;
 import com.ace.mcq.pojo.QuestionCreate;
+import com.ace.mcq.pojo.QuestionWithOptions;
 import com.ace.mcq.repo.OptionsRepo;
 import com.ace.mcq.repo.QuestionsRepo;
 import com.ace.mcq.repo.SubjectsRepo;
@@ -74,24 +78,82 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 
 	@Override
-	public List<GetAllQuestionResponse> getAllQuestion(String testName,String subjectName) {
+	public List<QuestionWithOptions> getAllQuestion(String testName,String subjectName) {
 		
 		Integer subjectId= validateSubjectName(subjectName);
 		Integer testId = validateTestName(testName,subjectId);
 		
-	List<GetAllQuestionResponse> getAllQuestionResponse = questionsRepo.getAllQuestions(testId).stream()
+	List<QuestionWithOptions> getAllQuestionResponse = questionsRepo.getAllQuestions(testId).stream()
 		.map((question)->{
 			
 			List<String> options = optionsRepo.getAllOptions(question.getQuestionId());
 			
-			return GetAllQuestionResponse.builder()
+			return QuestionWithOptions.builder()
 			.question(question.getQuestion())
 			.options(options)
 			.build();
 		}).collect(Collectors.toList());
 		return getAllQuestionResponse;
 	}
+
+
+	@Override
+	public void createQuestionWithOptions(QuestionWithOptionsCreate questionWithOptions) {
+		
+		validateOptions(questionWithOptions.getOptions());
+		Integer subjectId = validateSubjectName(questionWithOptions.getSubjectName());
+		Integer testId = validateTestName(questionWithOptions.getTestName(), subjectId);
+
+		//create question
+		Questions questions = Questions
+				.builder()
+				.question(questionWithOptions.getQuestion())
+				.testId(testId)
+				.creatTimeStamp(CommonUitilities.getSqlTimeStamp())
+				.build();
+		
+		Questions returnQuestion= questionsRepo.save(questions);
+		
+		
+		
+		
+	
+	
+	//create options
+	List<OptionsEntity> optionsEntity = questionWithOptions
+			.getOptions()
+			.stream()
+			.map((option) ->
+
+					OptionsEntity.builder()
+					.option(option.getOption())
+					.isCorrect(option.getIsCorrect())
+					.questionId(returnQuestion.getQuestionId())
+				    .creatTimeStamp(CommonUitilities.getSqlTimeStamp())
+				    .build())
+			
+			.collect(Collectors.toList());
+
+	/*
+	 * optionsEntity.forEach((option)->{ optionsRepo.save(option); });
+	 */
+	optionsRepo.saveAll(optionsEntity);
+	
+	}
 	
 	
 
+
+
+private void validateOptions( List<Option> options) {
+	List<Option> correctOptions= options
+			.stream()
+			.filter((option)->
+	
+	option.getIsCorrect()).collect(Collectors.toList());
+
+if(correctOptions.size()!=1) {
+	throw new CommonException("only one answer should correct");
+}
+}
 }

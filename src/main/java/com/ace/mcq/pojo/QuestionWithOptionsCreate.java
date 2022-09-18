@@ -10,10 +10,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetAllQuestionResponse {
+public class QuestionWithOptionsCreate {
 	
 	private String question;
 	
-	private List<String> options;
+	private List<Option> options;
+	
+	private String testName;
+	
+	private String subjectName;
 
 }
