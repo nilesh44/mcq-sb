@@ -13,6 +13,10 @@ import com.ace.mcq.entity.Questions;
 public interface OptionsRepo extends JpaRepository<OptionsEntity, Integer> {
 
 	
-	@Query("select o.option from OptionsEntity o where o.questionId = :questionId and  o.expTimeStamp is null")
-	public List<String> getAllOptions(@Param("questionId") Integer questionId);
+	@Query("select o from OptionsEntity o where o.questionId = :questionId and  o.expTimeStamp is null")
+	public List<OptionsEntity> getAllOptions(@Param("questionId") Integer questionId);
+
+	@Query("select o from OptionsEntity o where o.questionId = :questionId and o.isCorrect is true and  o.expTimeStamp is null")
+	public OptionsEntity findCorrectAnswer(@Param("questionId") Integer questionId);
+
 }

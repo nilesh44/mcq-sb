@@ -12,7 +12,10 @@ import com.ace.mcq.entity.OptionsEntity;
 import com.ace.mcq.entity.Questions;
 import com.ace.mcq.execption.CommonException;
 import com.ace.mcq.pojo.QuestionWithOptionsCreate;
+import com.ace.mcq.pojo.FindCorrectAnswerRequest;
+import com.ace.mcq.pojo.FindCorrectAnswerResponse;
 import com.ace.mcq.pojo.Option;
+import com.ace.mcq.pojo.OptionResonse;
 import com.ace.mcq.pojo.QuestionCreate;
 import com.ace.mcq.pojo.QuestionWithOptions;
 import com.ace.mcq.repo.OptionsRepo;
@@ -86,11 +89,16 @@ public class QuestionServiceImpl implements QuestionService {
 	List<QuestionWithOptions> getAllQuestionResponse = questionsRepo.getAllQuestions(testId).stream()
 		.map((question)->{
 			
-			List<String> options = optionsRepo.getAllOptions(question.getQuestionId());
+			List<OptionsEntity> options = optionsRepo.getAllOptions(question.getQuestionId());
 			
+			List<OptionResonse> optionResponse=	options.stream().map((option)->{
+				return OptionResonse.builder().optionId(option.getOptionId().toString())
+				.option(option.getOption()).build();
+			}).collect(Collectors.toList());
 			return QuestionWithOptions.builder()
 			.question(question.getQuestion())
-			.options(options)
+			.questionId(question.getQuestionId().toString())
+			.options(optionResponse)
 			.build();
 		}).collect(Collectors.toList());
 		return getAllQuestionResponse;
@@ -155,5 +163,16 @@ private void validateOptions( List<Option> options) {
 if(correctOptions.size()!=1) {
 	throw new CommonException("only one answer should correct");
 }
+}
+
+
+@Override
+public FindCorrectAnswerResponse findCorrectAnswer(FindCorrectAnswerRequest findCorrectAnswerRequest) {
+	OptionsEntity option= optionsRepo.findCorrectAnswer(findCorrectAnswerRequest.getQuestionId());
+	
+	if(option!=null && option.getOptionId()==findCorrectAnswerRequest.getOptionId()) {
+		return FindCorrectAnswerResponse.builder().msg("correct Answer").build();
+	}
+	return FindCorrectAnswerResponse.builder().msg("Incorrect answer").build();
 }
 }
