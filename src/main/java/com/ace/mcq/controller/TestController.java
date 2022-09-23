@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ace.mcq.pojo.CreateTestRequest;
+import com.ace.mcq.pojo.SuccessfullResponse;
 import com.ace.mcq.service.TestService;
 
 @RestController
@@ -24,9 +25,11 @@ public class TestController {
     private TestService testService;
 
     @PostMapping(value="/test/create")
-    public ResponseEntity<String> createTest(@RequestBody CreateTestRequest createTestRequest){
-        testService.createTest(createTestRequest);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<SuccessfullResponse> createTest(@RequestBody CreateTestRequest createTestRequest){
+        
+        return ResponseEntity
+        		.status(HttpStatus.OK)
+        		.body(testService.createTest(createTestRequest));
 
     }
     
