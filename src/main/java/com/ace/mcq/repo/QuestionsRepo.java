@@ -18,6 +18,8 @@ public interface QuestionsRepo extends JpaRepository<Questions, Integer> {
 	@Query("select q from Questions q where q.testId = :testId and  q.expTimeStamp is null")
 	public List<Questions> getAllQuestions(@Param("testId") Integer testId);
 
-	
+	@Query("select q from Questions q where q.questionId = :questionId and  q.expTimeStamp is null")
+	public Questions findQuestionById(@Param("questionId") Integer questionId);
+
 
 }

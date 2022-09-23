@@ -13,25 +13,30 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ace.mcq.pojo.QuestionWithOptionsCreate;
+import com.ace.mcq.pojo.SuccessfullResponse;
+import com.ace.mcq.pojo.CreateQuestionResponse;
 import com.ace.mcq.pojo.FindCorrectAnswerRequest;
 import com.ace.mcq.pojo.FindCorrectAnswerResponse;
 import com.ace.mcq.pojo.QuestionCreate;
 import com.ace.mcq.pojo.QuestionWithOptions;
 import com.ace.mcq.service.QuestionService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
 @CrossOrigin("http://localhost:3000/")
+@Slf4j
 public class QuestionController {
 	
 	@Autowired
 	private QuestionService questionService;
 	
 	@PostMapping(value = "/question/create")
-	public ResponseEntity<String> createQuestion(@RequestBody QuestionCreate questionCreate){
+	public ResponseEntity<SuccessfullResponse> createQuestion(@RequestBody QuestionCreate questionCreate){
 		
-		questionService.createQuestion(questionCreate);
 		
-		return ResponseEntity.status(HttpStatus.OK).build();
+		
+		return ResponseEntity.status(HttpStatus.OK).body(questionService.createQuestion(questionCreate));
 		
 	}
 		 
@@ -43,13 +48,21 @@ public class QuestionController {
 				.status(HttpStatus.OK)
 				.body(questionsWithOptions);
 	}
+    
+    @GetMapping(value = "/question/{questionId}")
+   	public ResponseEntity<QuestionWithOptions> getQuestion(@PathVariable("questionId") String questionId
+   			){		
+       	QuestionWithOptions questionsWithOptions= questionService.getQuestion(questionId);
+   		return ResponseEntity
+   				.status(HttpStatus.OK)
+   				.body(questionsWithOptions);
+   	}
       
     @PostMapping(value="/questionWithOptions/create")
-    public ResponseEntity<String> CreateQuestionWithOptions(@RequestBody QuestionWithOptionsCreate questionsWithOptions){
-    	questionService.createQuestionWithOptions(questionsWithOptions);
-    	return ResponseEntity
-				.status(HttpStatus.OK)
-				.build();
+    public ResponseEntity<CreateQuestionResponse> CreateQuestionWithOptions(@RequestBody QuestionWithOptionsCreate questionsWithOptions){
+    	CreateQuestionResponse response=questionService.createQuestionWithOptions(questionsWithOptions);
+    	log.info(response.getQuestionId());
+    	return ResponseEntity.status(HttpStatus.OK).body(response);
     }
     
     @PostMapping(value="/question/getCorrectAnswer")

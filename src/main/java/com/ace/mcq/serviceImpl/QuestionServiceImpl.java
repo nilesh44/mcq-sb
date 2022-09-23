@@ -11,7 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ace.mcq.entity.OptionsEntity;
 import com.ace.mcq.entity.Questions;
 import com.ace.mcq.execption.CommonException;
+import com.ace.mcq.execption.RecordNotFoundException;
 import com.ace.mcq.pojo.QuestionWithOptionsCreate;
+import com.ace.mcq.pojo.SuccessfullResponse;
+import com.ace.mcq.pojo.CreateQuestionResponse;
 import com.ace.mcq.pojo.FindCorrectAnswerRequest;
 import com.ace.mcq.pojo.FindCorrectAnswerResponse;
 import com.ace.mcq.pojo.Option;
@@ -46,7 +49,7 @@ public class QuestionServiceImpl implements QuestionService {
 	private OptionsRepo optionsRepo;
 	
 	@Override
-	public void createQuestion(QuestionCreate questionCreate) {
+	public SuccessfullResponse createQuestion(QuestionCreate questionCreate) {
 		
 		//validate and throw error if test not present
 		Integer subjectId= validateSubjectName(questionCreate.getSubjectName());
@@ -62,6 +65,7 @@ public class QuestionServiceImpl implements QuestionService {
 		questionsRepo.save(questions);
 		
 		 log.info("question "+questionCreate.getQuestion() +" created successfully" );
+		 return SuccessfullResponse.builder().msg("Question created successfully").build();
 	}
 	
 
@@ -106,7 +110,7 @@ public class QuestionServiceImpl implements QuestionService {
 
 
 	@Override
-	public void createQuestionWithOptions(QuestionWithOptionsCreate questionWithOptions) {
+	public CreateQuestionResponse createQuestionWithOptions(QuestionWithOptionsCreate questionWithOptions) {
 		
 		validateOptions(questionWithOptions.getOptions());
 		Integer subjectId = validateSubjectName(questionWithOptions.getSubjectName());
@@ -146,6 +150,7 @@ public class QuestionServiceImpl implements QuestionService {
 	 * optionsEntity.forEach((option)->{ optionsRepo.save(option); });
 	 */
 	optionsRepo.saveAll(optionsEntity);
+	 return CreateQuestionResponse.builder().questionId(returnQuestion.getQuestionId().toString()).build();
 	
 	}
 	
@@ -154,6 +159,7 @@ public class QuestionServiceImpl implements QuestionService {
 
 
 private void validateOptions( List<Option> options) {
+	
 	List<Option> correctOptions= options
 			.stream()
 			.filter((option)->
@@ -161,8 +167,9 @@ private void validateOptions( List<Option> options) {
 	option.getIsCorrect()).collect(Collectors.toList());
 
 if(correctOptions.size()!=1) {
-	throw new CommonException("only one answer should correct");
+	throw new CommonException("please select only one correct answer");
 }
+
 }
 
 
@@ -174,5 +181,29 @@ public FindCorrectAnswerResponse findCorrectAnswer(FindCorrectAnswerRequest find
 		return FindCorrectAnswerResponse.builder().msg("correct Answer").build();
 	}
 	return FindCorrectAnswerResponse.builder().msg("Incorrect answer").build();
+}
+
+
+@Override
+public QuestionWithOptions getQuestion(String QuestionId) {
+	 Questions question=questionsRepo.findQuestionById(Integer.parseInt(QuestionId));
+	 
+	 if(question==null) {
+		 throw new RecordNotFoundException("question not found");
+	 }
+	 
+	 List<OptionsEntity> options = optionsRepo.getAllOptions(question.getQuestionId());
+		
+		List<OptionResonse> optionResponse=	options.stream().map((option)->{
+			return OptionResonse.builder().optionId(option.getOptionId().toString())
+			.option(option.getOption()).build();
+		}).collect(Collectors.toList());
+		return QuestionWithOptions.builder()
+		.question(question.getQuestion())
+		.questionId(question.getQuestionId().toString())
+		.options(optionResponse)
+		.build();
+	 
+	
 }
 }
