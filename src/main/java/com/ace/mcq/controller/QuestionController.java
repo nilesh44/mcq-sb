@@ -24,7 +24,7 @@ import com.ace.mcq.service.QuestionService;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@CrossOrigin("http://localhost:3000/")
+//@CrossOrigin("http://localhost:3000/")
 @Slf4j
 public class QuestionController {
 	

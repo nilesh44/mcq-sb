@@ -17,7 +17,7 @@ import com.ace.mcq.pojo.SuccessfullResponse;
 import com.ace.mcq.service.TestService;
 
 @RestController
-@CrossOrigin("http://localhost:3000/")
+//@CrossOrigin("http://localhost:3000/")
 public class TestController {
     
 
@@ -40,4 +40,12 @@ public class TestController {
 				.status(HttpStatus.OK)
 				.body(testName);
 	}
+    
+    @GetMapping(value = "/test")
+   	public ResponseEntity<String> test(){		
+   		
+   		return ResponseEntity
+   				.status(HttpStatus.OK)
+   				.body("running");
+   	}
 }

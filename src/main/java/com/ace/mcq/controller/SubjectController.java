@@ -17,7 +17,7 @@ import com.ace.mcq.service.SubjectService;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@CrossOrigin("http://localhost:3000/")
+//@CrossOrigin("http://localhost:3000/")
 public class SubjectController {
 
 	@Autowired
